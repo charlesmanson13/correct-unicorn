@@ -27,7 +27,7 @@ source-repository head
   type: git
   location: https://github.com/utgarda/correct-unicorn
 
-executable correct-unicorn-exe
+executable correct-unicorn
   main-is: Main.hs
   other-modules:
       Paths_correct_unicorn

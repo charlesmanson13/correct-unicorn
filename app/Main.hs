@@ -36,5 +36,8 @@ genPassword (Settings count) = do
       indexes = take count $ randoms stdGen :: [Int]
       cappedIndexes = fmap (`mod` dictSize) indexes
       usedWords = [dictionaryWords !! x | x <- cappedIndexes]
-      output = unwords usedWords
-  putStrLn output
+      enumeratedWords = zip [0..] usedWords
+      colours = ["\x1b[32m", "\x1b[33m"]
+      pWords = fmap (\it -> (colours !! (mod (fst it) 2)) ++ (snd it)) enumeratedWords
+      output = unwords pWords
+  putStrLn $ "\x1b[1m" ++ output

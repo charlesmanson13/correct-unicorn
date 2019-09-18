@@ -36,5 +36,22 @@ genPassword (Settings count) = do
       indexes = take count $ randoms stdGen :: [Int]
       cappedIndexes = fmap (`mod` dictSize) indexes
       usedWords = [dictionaryWords !! x | x <- cappedIndexes]
-      output = unwords usedWords
-  putStrLn output
+      coloredWords = paintWords usedWords
+      output = unwords coloredWords
+  putStrLn $ bold output
+
+colors :: [[Char]]
+colors = ["\x1b[32m", "\x1b[33m"]
+
+prependColor :: (Int, [Char]) -> [Char]
+prependColor (index, word) = do
+    let isOdd = mod index 2
+        colour =  colors !! isOdd
+    colour ++ word
+
+paintWords :: [[Char]] -> [[Char]]
+paintWords words = fmap prependColor $ zip [0..] words
+
+bold :: [Char] -> [Char]
+bold string = "\x1b[1m" ++ string
+

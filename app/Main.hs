@@ -4,6 +4,8 @@ import Options.Applicative
 import Data.Semigroup ((<>))
 import System.Random
 
+import PrettyAnsi
+
 dictionaryPath:: String
 dictionaryPath = "/usr/share/dict/words"
 
@@ -27,6 +29,10 @@ main = genPassword =<< execParser opts
      <> progDesc "passphrase generator inspired by xkcd 936"
      <> header "have fun!" )
 
+usedColors :: [[Char]]
+usedColors = [ansiGreen, ansiYellow]
+-- usedColors = [ansiGreen, ansiYellow, ansiBlue, ansiMagenta]
+
 genPassword :: Settings -> IO ()
 genPassword (Settings count) = do
   content <- readFile dictionaryPath
@@ -36,22 +42,6 @@ genPassword (Settings count) = do
       indexes = take count $ randoms stdGen :: [Int]
       cappedIndexes = fmap (`mod` dictSize) indexes
       usedWords = [dictionaryWords !! x | x <- cappedIndexes]
-      coloredWords = paintWords usedWords
+      coloredWords = paintWords usedWords usedColors
       output = unwords coloredWords
   putStrLn $ bold output
-
-colors :: [[Char]]
-colors = ["\x1b[32m", "\x1b[33m"]
-
-prependColor :: (Int, [Char]) -> [Char]
-prependColor (index, word) = do
-    let isOdd = mod index 2
-        colour =  colors !! isOdd
-    colour ++ word
-
-paintWords :: [[Char]] -> [[Char]]
-paintWords words = fmap prependColor $ zip [0..] words
-
-bold :: [Char] -> [Char]
-bold string = "\x1b[1m" ++ string
-

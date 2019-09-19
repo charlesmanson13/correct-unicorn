@@ -30,6 +30,7 @@ source-repository head
 executable correct-unicorn
   main-is: Main.hs
   other-modules:
+      PrettyAnsi
       Paths_correct_unicorn
   hs-source-dirs:
       app

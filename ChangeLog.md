@@ -5,4 +5,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Minimalistic first implementation using a hardcoded dictionary file
-- Words count ommand-line arg
+- Words count command-line arg
+- Colored password output

@@ -21,17 +21,9 @@ ansiReset = "\x1b[0m"
 ansiBold :: [Char]
 ansiBold = "\x1b[0m"
 
-prependColor :: [[Char]] -> Int -> (Int, [Char]) -> [Char]
-prependColor colors colorsCount (number, word)= do
-    let colorIndex = mod number colorsCount
-        color =  colors !! colorIndex
-    color ++ word
-
-
 paintWords :: [[Char]] -> [[Char]] -> [[Char]]
-paintWords words colors = do
-    let mapper = prependColor colors $ length colors
-    fmap mapper $ zip [0..] words
+paintWords words colors =
+    [color ++ word | (color, word) <- zip (cycle colors) words]
 
 bold :: [Char] -> [Char]
 bold string = ansiBold ++ string
